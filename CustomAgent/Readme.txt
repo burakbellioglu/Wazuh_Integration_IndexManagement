@@ -1,0 +1,1 @@
+Bu scriptler custom agent kurulumunda logcollectorun 200 dosya limitini kaldırır.

@@ -1,0 +1,47 @@
+{
+    "policy": {
+        "policy_id": "hot_cold_shrunken",
+        "description": "A sample description of the policy",
+        "last_updated_time": 1721738730446,
+        "schema_version": 19,
+        "error_notification": null,
+        "default_state": "force_state",
+        "states": [
+            {
+                "name": "force_state",
+                "actions": [
+                    {
+                        "retry": {
+                            "count": 3,
+                            "backoff": "exponential",
+                            "delay": "5m"
+                        },
+                        "force_merge": {
+                            "max_num_segments": 1
+                        }
+                    }
+                ],
+                "transitions": [
+                    {
+                        "state_name": "cold_state"
+                    }
+                ]
+            },
+            {
+                "name": "cold_state",
+                "actions": [],
+                "transitions": [
+                    {
+                        "state_name": "delete_state"
+                    }
+                ]
+            },
+            {
+                "name": "delete_state",
+                "actions": [],
+                "transitions": []
+            }
+        ],
+        "ism_template": []
+    }
+}

@@ -1,0 +1,80 @@
+{
+    "policy": {
+        "policy_id": "hot_cold_alert",
+        "description": "A sample description of the policy",
+        "last_updated_time": 1721741202288,
+        "schema_version": 19,
+        "error_notification": null,
+        "default_state": "hot_state",
+        "states": [
+            {
+                "name": "hot_state",
+                "actions": [],
+                "transitions": [
+                    {
+                        "state_name": "cold"
+                    }
+                ]
+            },
+            {
+                "name": "cold",
+                "actions": [
+                    {
+                        "retry": {
+                            "count": 3,
+                            "backoff": "exponential",
+                            "delay": "5m"
+                        },
+                        "read_only": {}
+                    }
+                ],
+                "transitions": [
+                    {
+                        "state_name": "shrink"
+                    }
+                ]
+            },
+            {
+                "name": "shrink",
+                "actions": [
+                    {
+                        "retry": {
+                            "count": 3,
+                            "backoff": "exponential",
+                            "delay": "5m"
+                        },
+                        "replica_count": {
+                            "number_of_replicas": 3
+                        }
+                    },
+                    {
+                        "retry": {
+                            "count": 3,
+                            "backoff": "exponential",
+                            "delay": "5m"
+                        },
+                        "shrink": {
+                            "num_new_shards": 1,
+                            "target_index_name_template": {
+                                "source": "{{ctx.index}}_shrunken",
+                                "lang": "mustache"
+                            },
+                            "force_unsafe": true
+                        }
+                    }
+                ],
+                "transitions": [
+                    {
+                        "state_name": "delete_state"
+                    }
+                ]
+            },
+            {
+                "name": "delete_state",
+                "actions": [],
+                "transitions": []
+            }
+        ],
+        "ism_template": []
+    }
+}

@@ -1,0 +1,1 @@
+Once hot_cold_alerts adlı policy ile asıl logun shard sayısı azaltılır ardından hot_cold_shrunken ile oluşan logun segment sayısı azaltılır. Boylece ortalama %50 disk alanı kazanmış oluruz
